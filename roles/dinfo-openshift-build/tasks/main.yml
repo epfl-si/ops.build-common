@@ -1,0 +1,9 @@
+- include_vars: dinfo-openshift-build-vars.yml
+  tags: always
+
+- include_tasks:
+    file: dinfo-openshift-build-tasks.yml
+    apply:
+      tags:
+        - dinfo.openshift-build
+  tags: always

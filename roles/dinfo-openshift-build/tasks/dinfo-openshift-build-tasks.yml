@@ -1,0 +1,10 @@
+- name: BuildConfig and ImageStream for “ion-base” image
+  openshift_imagestream:
+    metadata:
+      name: '{{ dinfo_perl_base_image_name }}'
+      namespace: '{{ dinfo_build_openshift_namespace }}'
+    from: httpd:buster
+    dockerfile: >-
+      {{ lookup("template", "Dockerfile") }}
+      
+      

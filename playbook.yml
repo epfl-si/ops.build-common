@@ -1,0 +1,5 @@
+- name: Base images built on OpenShift
+  hosts: all
+  gather_facts: no
+  roles:
+    - role: roles/dinfo-openshift-build
