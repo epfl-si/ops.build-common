@@ -41,3 +41,12 @@
         uri: '{{ dinfo_build_cadi_libs_git_repository }}'
       sourceSecret:
         name: idevfsd-checkouter
+    strategy:
+      dockerStrategy:
+        forcePull: false  # As the image comes out of Docker Hub. TODO: this should be the default
+                          # in epfl_si.ansible_module_openshift
+        from:
+          kind: ImageStreamTag
+          name: 'httpd:buster'
+          namespace: dinfo-cicd
+        
