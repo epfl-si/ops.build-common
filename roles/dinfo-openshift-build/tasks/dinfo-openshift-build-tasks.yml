@@ -1,10 +1,43 @@
-- name: BuildConfig and ImageStream for “ion-base” image
+- name: Sync `httpd:buster` image from Docker Hub
   openshift_imagestream:
+    state: latest
+    metadata:
+      name:  httpd
+      namespace: '{{ dinfo_build_openshift_namespace }}'
+    from:
+      kind: DockerImage
+      name: httpd:buster
+    tag: buster
+
+- name: "`idevfsd-checkouter` secret (ssh key pair)"
+  openshift:
+    state: latest
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: idevfsd-checkouter
+      namespace: '{{ dinfo_build_openshift_namespace }}'
+    type: kubernetes.io/ssh-auth
+    data:
+      ssh-privatekey: '{{ _id_rsa | base64 }}'
+      known_hosts:    '{{ _known_hosts | base64 }}'
+  vars:
+    # Be sure that `_id_rsa` ends with a newline, lest OpenShift silently fail
+    # to use it!
+    _id_rsa: |
+      {{ lookup("file", "{{ dinfo_build_cadi_libs_ssh_secret_key_path }}") }}
+
+    _known_hosts: '{{ lookup("pipe", "{{ dinfo_build_cadi_libs_ssh_known_hosts_cmd }} 2>/dev/null | sort") }}'
+
+- name: BuildConfig and ImageStream for “cadi-libs-idevfsd” image
+  openshift_imagestream:
+    state: latest
     metadata:
       name: '{{ dinfo_perl_base_image_name }}'
       namespace: '{{ dinfo_build_openshift_namespace }}'
     from: httpd:buster
-    dockerfile: >-
-      {{ lookup("template", "Dockerfile") }}
-      
-      
+    source:
+      git:
+        uri: '{{ dinfo_build_cadi_libs_git_repository }}'
+      sourceSecret:
+        name: idevfsd-checkouter
