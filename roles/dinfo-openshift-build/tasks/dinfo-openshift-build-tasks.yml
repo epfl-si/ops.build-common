@@ -39,6 +39,7 @@
     source:
       git:
         uri: '{{ dinfo_build_cadi_libs_git_repository }}'
+        ref: feature/moar-tools
       sourceSecret:
         name: idevfsd-checkouter
     strategy:
