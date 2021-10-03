@@ -1,4 +1,4 @@
-- name: Sync `httpd:buster` image from Docker Hub
+- name: Sync `docker2021repos/httpd:focal` image from Docker Hub
   openshift_imagestream:
     state: latest
     metadata:
@@ -6,7 +6,7 @@
       namespace: '{{ dinfo_build_openshift_namespace }}'
     from:
       kind: DockerImage
-      name: httpd:buster
+      name: docker2021repos/httpd:focal
     tag: buster
 
 - name: "`idevfsd-checkouter` secret (ssh key pair)"
@@ -35,7 +35,7 @@
     metadata:
       name: '{{ dinfo_perl_base_image_name }}'
       namespace: '{{ dinfo_build_openshift_namespace }}'
-    from: httpd:buster
+    from: docker2021repos/httpd:focal
     source:
       git:
         uri: '{{ dinfo_build_cadi_libs_git_repository }}'
@@ -48,6 +48,6 @@
                           # in epfl_si.ansible_module_openshift
         from:
           kind: ImageStreamTag
-          name: 'httpd:buster'
+          name: 'docker2021repos/httpd:focal'
           namespace: dinfo-cicd
         
