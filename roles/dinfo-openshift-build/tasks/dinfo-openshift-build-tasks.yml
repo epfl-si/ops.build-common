@@ -35,11 +35,11 @@
     metadata:
       name: '{{ dinfo_perl_base_image_name }}'
       namespace: '{{ dinfo_build_openshift_namespace }}'
-    from: httpd:buster
+    from: docker-registry.default.svc:5000/{{ dinfo_build_openshift_namespace }}/httpd:buster
     source:
       git:
         uri: '{{ dinfo_build_cadi_libs_git_repository }}'
-        ref: feature/moar-tools
+        ref: 'idev-fsd'
       sourceSecret:
         name: idevfsd-checkouter
     strategy:
