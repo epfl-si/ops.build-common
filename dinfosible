@@ -34,8 +34,7 @@ fatal () {
 
 platform_check () {
     if ! test -f ansible-deps-cache/.versions 2>/dev/null; then
-      # curl https://raw.githubusercontent.com/epfl-si/ansible.suitcase/master/install.sh | \
-      cat $HOME/Dev/ops/ansible.suitcase/install.sh | \
+      curl https://raw.githubusercontent.com/epfl-si/ansible.suitcase/master/install.sh | \
             SUITCASE_ANSIBLE_VERSION=4.0.0 \
             SUITCASE_DIR=$PWD/ansible-deps-cache \
             SUITCASE_PIP_EXTRA="bcrypt passlib openshift" \
